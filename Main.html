@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archon Fraternity (ΑΧΝ)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <!-- AOS (Animate On Scroll) - lightweight scroll-triggered reveals -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #121008;
+            --bg-soft: #1a1710;
+            --text: #f5f5f5;
+            --text-muted: #a3a3a3;
+            --accent: #e70d31;
+            --gold: #ffcc24;
+            --font: 'DM Sans', -apple-system, sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; min-height: 100%; }
+
+        /* Particle network background – reddish gradient (top-left) fading to black (bottom-right) */
+        #particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: linear-gradient(140deg, #1a160e 0%, #16120a 25%, #121008 50%, #0f0c06 75%, #0c0a04 100%);
+        }
+        #particle-bg canvas { display: block; }
+
+        body {
+            font-family: var(--font);
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a160e 0%, #121008 50%, #0c0a04 100%) !important;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            padding: 0.75rem 1rem;
+            background: var(--gold);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 9999;
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 1rem; }
+
+        /* Header – minimal, logo-centered like Stigma */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;  /* above particle bg */
+            background: var(--bg);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 1.25rem 2rem;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo-link img {
+            width: 48px;
+            height: auto;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .logo-tagline {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        nav.desktop-nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav.desktop-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        nav.desktop-nav a:hover { color: var(--gold); }
+
+        /* Mobile menu */
+        .header-instagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            color: var(--text);
+            opacity: 0.9;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .header-instagram:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        .header-instagram img {
+            display: block;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 200;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .mobile-nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .mobile-nav.open { display: flex; }
+
+        @media (max-width: 768px) {
+            nav.desktop-nav { display: none; }
+            .menu-toggle { display: block; }
+        }
+
+        main { outline: none; position: relative; z-index: 1; }
+
+        /* Hero – full-bleed welcome photo, light overlay so image stays visible */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: url('img/hero-welcome.png') center/cover no-repeat;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.5) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 640px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 700;
+            margin: 0 0 0.5rem;
+            letter-spacing: -0.02em;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 24px rgba(0,0,0,0.35);
+        }
+
+        .hero .tagline {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.95);
+            margin: 0 0 2rem;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        }
+
+        .cta-arrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .cta-arrow:hover { opacity: 0.9; transform: translateY(2px); }
+
+        .cta-arrow svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Sections – clean, minimal */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            margin: 0 0 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* About */
+        #about .section-title { text-align: center; }
+
+        #about p {
+            max-width: 640px;
+            margin: 0 auto;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Leadership – one big image */
+        .officer-block {
+            text-align: center;
+        }
+
+        .officer-block img {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Events & Calendar */
+        .events-intro {
+            color: var(--text-muted);
+            max-width: 640px;
+            margin: 0 0 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .events-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem;
+        }
+
+        .events-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .events-list li strong { color: var(--gold); }
+
+        /* Google Calendar embed */
+        .calendar-wrap {
+            margin: 2rem 0 3rem;
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .calendar-wrap iframe {
+            display: block;
+            width: 100%;
+            min-height: 400px;
+            height: 480px;
+            border: none;
+        }
+
+        /* Past events gallery */
+        .past-events-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1rem;
+            color: var(--text);
+        }
+
+        .past-events-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .past-event-item {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .past-event-item .event-img-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .past-event-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .past-event-item .caption {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Donate panel */
+        .donate-panel {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 2rem;
+            margin-top: 2rem;
+            max-width: 560px;
+        }
+
+        .donate-panel .section-title {
+            margin-bottom: 1rem;
+        }
+
+        .donate-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .donate-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: 1.25rem;
+            background: var(--bg);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+        }
+
+        .donate-option-logo {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .donate-option-logo.cashapp { background: #00D54B; }
+        .donate-option-logo.paypal { background: #003087; }
+
+        .donate-option-logo svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .donate-option-logo.paypal svg,
+        .donate-option-logo.paypal img { width: 32px; height: 32px; object-fit: contain; }
+
+        .donate-option-body {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .donate-option-body label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+
+        .donate-option-body .tag {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .donate-amount-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+
+        .donate-amount-row input[type="number"] {
+            width: 100px;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+        }
+
+        .donate-amount-row input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .donate-option .btn-donate {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            font-family: var(--font);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .donate-option .btn-donate:hover { opacity: 0.9; }
+
+        .donate-option.cashapp .btn-donate { background: #00D54B; color: #000; }
+        .donate-option.cashapp .btn-donate:hover { opacity: 0.9; }
+
+        /* ========== News & Community Service ========== */
+        .news-intro {
+            margin: -0.5rem 0 2rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            line-height: 1.6;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .news-card {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+        }
+
+        .news-card-link {
+            display: block;
+            padding: 1.5rem;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .news-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .news-date {
+            font-size: 0.8rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .news-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(212,175,55,0.2);
+            color: var(--gold);
+            border-radius: 4px;
+        }
+
+        .news-card-title {
+            margin: 0 0 0.5rem;
+            font-size: 1.15rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .news-card-excerpt {
+            margin: 0 0 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .news-read-more {
+            font-size: 0.85rem;
+            color: var(--gold);
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .news-card:hover .news-read-more { opacity: 0.9; }
+
+        /* News slideshow (Rio RedStorm-style featured banner) */
+        .news-front { padding-top: 3rem; }
+        .news-slideshow {
+            position: relative;
+            max-width: 100%;
+            margin: 0 0 2.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .slideshow-inner {
+            position: relative;
+            aspect-ratio: 21/9;
+            min-height: 280px;
+        }
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 1;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+        .slide-caption a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .slide-caption a:hover { opacity: 0.9; }
+        .slideshow-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            width: 48px;
+            height: 48px;
+            border: none;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.2s, transform 0.2s;
+            line-height: 1;
+        }
+        .slideshow-btn:hover {
+            background: rgba(212,175,55,0.8);
+            color: var(--bg);
+        }
+        .slideshow-btn.prev { left: 1rem; }
+        .slideshow-btn.next { right: 1rem; }
+        .slideshow-dots {
+            position: absolute;
+            bottom: 3.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .slideshow-dots button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .slideshow-dots button.active {
+            background: var(--gold);
+            transform: scale(1.2);
+        }
+        .slideshow-dots button:hover { background: rgba(255,255,255,0.8); }
+        @media (max-width: 768px) {
+            .slideshow-inner { aspect-ratio: 16/9; min-height: 220px; }
+            .slideshow-btn { width: 36px; height: 36px; font-size: 1.5rem; }
+            .slideshow-btn.prev { left: 0.5rem; }
+            .slideshow-btn.next { right: 0.5rem; }
+        }
+
+        /* Facebook post card – dark mode, above slideshow */
+        .fb-post-card {
+            display: block;
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 560px;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .fb-post-card:hover {
+            border-color: rgba(212,175,55,0.3);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .fb-post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .fb-post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .fb-post-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .fb-post-meta {
+            flex: 1;
+            min-width: 0;
+        }
+        .fb-post-name {
+            display: block;
+            font-weight: 700;
+            color: var(--text);
+            font-size: 1rem;
+        }
+        .fb-post-time {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .fb-post-badge {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+        .fb-post-text {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+        .fb-post-card:hover .fb-post-text { color: rgba(245,245,245,0.9); }
+
+        /* ========== Recruitment / Rush Hub ========== */
+        .rush-hub .block-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 1rem;
+            color: var(--text);
+        }
+
+        .rush-hub .sub-section { margin-bottom: 3.5rem; }
+        .rush-hub .sub-section:last-child { margin-bottom: 0; }
+
+        /* Why Archon – value cards */
+        .why-archon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .why-card {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .why-card h4 {
+            margin: 0 0 0.5rem;
+            font-size: 1rem;
+            color: var(--gold);
+        }
+
+        .why-card p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Rush schedule + form */
+        .rush-schedule-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem;
+        }
+
+        .rush-schedule-list li {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.5rem 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .rush-schedule-list strong { color: var(--gold); min-width: 100px; }
+
+        .rush-form {
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .rush-form input,
+        .rush-form select {
+            padding: 0.75rem 1rem;
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 1rem;
+        }
+
+        .rush-form input:focus,
+        .rush-form select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .rush-form button {
+            padding: 0.75rem 1.25rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font);
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.25rem;
+        }
+
+        .rush-form button:hover { opacity: 0.9; }
+
+        /* Meet the Bros grid */
+        .bros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .bro-card {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            position: relative; /* for overlay positioning */
+        }
+
+        .bro-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        .bro-card .bro-info { padding: 1rem; }
+
+        .bro-card .bro-name { font-weight: 600; margin: 0 0 0.25rem; font-size: 0.95rem; }
+        .bro-card .bro-major { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+        .bro-card .bro-fact { font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0 0; font-style: italic; }
+
+        /* Little Sis grid */
+        .lilsis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+        .lilsis-card {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+        }
+        .lilsis-card:hover {
+            transform: scale(1.06) translateY(-10px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 24px rgba(255, 204, 36, 0.15);
+        }
+        .lilsis-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+        }
+        .lilsis-card .lilsis-info { padding: 1rem; }
+        .lilsis-card .lilsis-name { font-weight: 600; margin: 0; font-size: 0.95rem; color: var(--text); }
+
+        /* ========== HOVER & SCROLL ANIMATIONS (pure CSS + AOS) ========== */
+
+        /* Member cards (bro-card): scale, lift, gold glow, overlay reveal */
+        .bro-card {
+            transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+        }
+        .bro-card:hover {
+            transform: scale(1.06) translateY(-10px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 24px rgba(255, 204, 36, 0.15);
+        }
+        /* Overlay with extra info (major, fact) slides up from bottom on hover */
+        .bro-card .bro-card-reveal {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            color: var(--text);
+            transform: translateY(100%);
+            transition: transform 0.35s ease-out;
+            z-index: 2;
+        }
+        .bro-card .bro-card-reveal .bro-major,
+        .bro-card .bro-card-reveal .bro-fact {
+            margin: 0.25rem 0 0;
+            font-size: 0.85rem;
+            color: var(--gold);
+        }
+        .bro-card .bro-card-reveal .bro-fact { color: rgba(255,255,255,0.9); font-style: italic; }
+        .bro-card:hover .bro-card-reveal {
+            transform: translateY(0);
+        }
+
+        /* Buttons: grow, accent glow on hover */
+        .cta-arrow,
+        .alumni-cta {
+            transition: transform 0.3s ease-out, background-color 0.3s ease-out, box-shadow 0.3s ease-out !important;
+        }
+        .cta-arrow:hover {
+            transform: scale(1.05) translateY(-2px) !important;
+            background-color: var(--gold) !important;
+            color: var(--bg) !important;
+            box-shadow: 0 6px 20px rgba(255, 204, 36, 0.35);
+        }
+        .rush-form button,
+        .donate-option .btn-donate {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, filter 0.3s ease-out !important;
+        }
+        .rush-form button:hover,
+        .donate-option .btn-donate:hover {
+            transform: scale(1.04) !important;
+            box-shadow: 0 6px 20px rgba(231, 13, 49, 0.4);
+        }
+        .donate-option.cashapp .btn-donate:hover {
+            box-shadow: 0 6px 20px rgba(0, 213, 75, 0.4);
+        }
+
+        /* Event gallery: subtle zoom + overlay text fade-in */
+        .past-event-item {
+            transition: transform 0.35s ease-out;
+        }
+        .past-event-item:hover {
+            transform: scale(1.03);
+        }
+        .past-event-item .event-img-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.35s ease-out;
+            z-index: 1;
+        }
+        .past-event-item:hover .event-img-wrap::before {
+            opacity: 1;
+        }
+        .past-event-item img {
+            transition: transform 0.4s ease-out;
+        }
+        .past-event-item:hover img {
+            transform: scale(1.1);
+        }
+        .past-event-item .caption {
+            transition: opacity 0.3s ease-out, color 0.3s ease-out;
+        }
+        .past-event-item:hover .caption {
+            color: var(--gold);
+        }
+
+        /* Why Archon cards: subtle hover lift */
+        .why-card {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .why-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* Impact section – philanthropy totals & partners */
+        .impact-intro {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin: 0 0 2.5rem;
+            max-width: 560px;
+        }
+        .impact-subtitle {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin: 0 0 1rem;
+            letter-spacing: -0.02em;
+        }
+        .impact-subtitle:not(:first-of-type) { margin-top: 2.5rem; }
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .total-card {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .total-card:hover {
+            transform: scale(1.03) translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 20px rgba(255, 204, 36, 0.12);
+        }
+        .total-card .number {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--gold);
+            margin: 0 0 0.25rem;
+            letter-spacing: -0.02em;
+        }
+        .total-card .label { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
+        .total-card .period { font-size: 0.8rem; color: var(--text-muted); opacity: 0.8; margin-top: 0.5rem; }
+        .partners-intro { color: var(--text-muted); margin: 0 0 1.5rem; font-size: 0.95rem; }
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .partner-card {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .partner-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .partner-card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; color: var(--text); }
+        .partner-card p { margin: 0; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* Respect reduced-motion preference for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .header-instagram { transition: none; }
+            .bro-card, .lilsis-card, .cta-arrow, .alumni-cta, .rush-form button, .donate-option .btn-donate,
+            .past-event-item, .why-card, .total-card, .partner-card, .news-card,
+            .slide { transition: none; }
+            .bro-card:hover, .lilsis-card:hover, .past-event-item:hover, .total-card:hover { transform: none; }
+            .partner-card:hover, .news-card:hover { transform: none; }
+            .fb-post-card { transition: none; }
+        }
+
+        /* FAQ */
+        .faq-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-width: 680px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .faq-item details summary {
+            padding: 1rem 0;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .faq-item details summary::-webkit-details-marker { display: none; }
+
+        .faq-item details summary::after {
+            content: '+';
+            font-size: 1.25rem;
+            color: var(--gold);
+        }
+
+        .faq-item details[open] summary::after { content: '−'; }
+
+        .faq-item .faq-answer {
+            padding: 0 0 1rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .faq-item .faq-answer p { margin: 0 0 0.5rem; }
+        .faq-item .faq-answer p:last-child { margin-bottom: 0; }
+
+        /* Archon Alumni Association */
+        .alumni-intro {
+            color: var(--text-muted);
+            max-width: 640px;
+            margin: 0 0 1.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .alumni-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .alumni-cta:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 13, 49, 0.35);
+        }
+
+        /* Footer – minimal like Stigma */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div id="particle-bg" aria-hidden="true"></div>
+    <a href="#page" class="skip-link">Skip to Content</a>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#" class="logo-link">
+                <img src="img/Picture1.png" alt="">
+                <div>
+                    <div class="logo-text">Archon Fraternity</div>
+                    <div class="logo-tagline">ΑΧΝ — Brotherhood for Life</div>
+                </div>
+            </a>
+
+            <nav class="desktop-nav" aria-label="Main">
+                <a href="#about">About</a>
+                <a href="#events">Events</a>
+                <a href="#impact">Impact</a>
+                <a href="#news">News</a>
+                <a href="#rush">Rush</a>
+                <a href="#donate">Donate</a>
+                <a href="#alumni">Alumni</a>
+                <a href="Contacts.html">Gallery</a>
+            </nav>
+
+            <a href="https://www.instagram.com/rioarchon/?hl=en" target="_blank" rel="noopener noreferrer" class="header-instagram" aria-label="Follow Archon on Instagram">
+                <img src="https://cdn.simpleicons.org/instagram/ffffff" alt="" width="24" height="24">
+            </a>
+            <button type="button" class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+                <span class="menu-text">Open Menu</span>
+            </button>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#events" class="nav-link">Events</a>
+        <a href="#impact" class="nav-link">Impact</a>
+        <a href="#news" class="nav-link">News</a>
+        <a href="#rush" class="nav-link">Rush</a>
+        <a href="#donate" class="nav-link">Donate</a>
+        <a href="#alumni" class="nav-link">Alumni</a>
+        <a href="Contacts.html" class="nav-link">Gallery</a>
+        <button type="button" class="menu-toggle close">Close Menu</button>
+    </nav>
+
+    <main id="page" tabindex="-1">
+        <section class="hero">
+            <div class="hero-content" data-aos="fade-up" data-aos-delay="100">
+                <h1>Welcome to Archon</h1>
+                <p class="tagline">Fostering leadership, brotherhood, and academic excellence since our founding.</p>
+                <a href="#donate" class="cta-arrow">
+                    Donate
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                </a>
+            </div>
+        </section>
+
+        <section id="news" class="section news-front" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section-title">News &amp; Community Service</h2>
+            <p class="news-intro">Shout-outs, service updates, and highlights from our brothers giving back to the community.</p>
+
+            <!-- Facebook post card – dark mode, above slideshow -->
+            <a href="https://www.facebook.com/penny.roush/posts/pfbid02epkzWiRGw4cEEoaghUqePz8hVFog94Zg8sau2cDfbDD2CU8PvxwSHsRAQf1hLszxl?rdid=pmuj5xcsC2U3rcWo" target="_blank" rel="noopener noreferrer" class="fb-post-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="fb-post-header">
+                    <div class="fb-post-avatar"><img src="img/penny-roush.png" alt="Penny Shuler Roush"></div>
+                    <div class="fb-post-meta">
+                        <span class="fb-post-name">Penny Shuler Roush</span>
+                        <span class="fb-post-time">about 3 months ago</span>
+                    </div>
+                    <span class="fb-post-badge">View on Facebook</span>
+                </div>
+                <p class="fb-post-text">A big shout out to the members of the University of Rio Grande Archon fraternity who came to my neighbourhood today to help my neighbours and get rid of some branches and bags of leaves. They will be coming tomorrow to take away our walnuts. Thanks for the help! And thanks to Mayor Matt for contacting them for me.</p>
+            </a>
+
+            <!-- Featured slideshow: community service photos (from Facebook post) -->
+            <div class="news-slideshow" aria-label="Community service highlights">
+                <div class="slideshow-inner">
+                    <div class="slide active">
+                        <img src="img/community-service-01.png" alt="Archon members loading trucks – community service">
+                        <div class="slide-caption">
+                            <a href="https://www.facebook.com/penny.roush/posts/pfbid02epkzWiRGw4cEEoaghUqePz8hVFog94Zg8sau2cDfbDD2CU8PvxwSHsRAQf1hLszxl?rdid=pmuj5xcsC2U3rcWo" target="_blank" rel="noopener noreferrer">A big shout out to Archon members – see full post on Facebook →</a>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-02.png" alt="Archon members clearing leaves and branches">
+                        <div class="slide-caption">Community yard cleanup</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-03.png" alt="Archon brothers clearing branches">
+                        <div class="slide-caption">Clearing branches</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-04.png" alt="Archon member raking leaves">
+                        <div class="slide-caption">Leaf cleanup &amp; yard work</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-05.png" alt="Archon members raking and loading">
+                        <div class="slide-caption">Team effort – raking &amp; loading</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-06.png" alt="Archon members loading truck with branches">
+                        <div class="slide-caption">Loading branches into the truck</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-07.png" alt="Archon members on pile of branches">
+                        <div class="slide-caption">Clearing branches together</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-08.png" alt="Archon brothers at community cleanup">
+                        <div class="slide-caption">Community cleanup in action</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-09.png" alt="Archon members organizing branches">
+                        <div class="slide-caption">Sorting and organizing debris</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/community-service-10.png" alt="Archon Fraternity group photo after service">
+                        <div class="slide-caption">Archon brothers after service day</div>
+                    </div>
+                </div>
+                <button type="button" class="slideshow-btn prev" aria-label="Previous slide">‹</button>
+                <button type="button" class="slideshow-btn next" aria-label="Next slide">›</button>
+                <div class="slideshow-dots" role="tablist"></div>
+            </div>
+
+            <div class="news-grid">
+                <article class="news-card" data-aos="fade-up" data-aos-delay="150">
+                    <a href="#" class="news-card-link">
+                        <div class="news-card-meta">
+                            <span class="news-date">Service Update</span>
+                        </div>
+                        <h3 class="news-card-title">TBD</h3>
+                        <p class="news-card-excerpt">Stay tuned for upcoming service updates.</p>
+                    </a>
+                </article>
+
+                <article class="news-card" data-aos="fade-up" data-aos-delay="200">
+                    <a href="#" class="news-card-link">
+                        <div class="news-card-meta">
+                            <span class="news-date">Campus</span>
+                        </div>
+                        <h3 class="news-card-title">TBD</h3>
+                        <p class="news-card-excerpt">Stay tuned for upcoming campus initiatives.</p>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section id="about" class="section" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section-title">About Us</h2>
+            <p>Archon Fraternity (ΑΧΝ) was founded with the mission of creating a supportive and empowering environment for young leaders. We focus on academic success, community service, and lifelong brotherhood. Our values are leadership, honor, and unity.</p>
+        </section>
+
+        <section class="section officer-block" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section-title">Our Leadership</h2>
+            <img src="img/officer-group-photo.JPG" alt="Group photo of Archon Fraternity officers">
+        </section>
+
+        <section id="events" class="section" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section-title">Archon Calendar</h2>
+            <p class="events-intro">Group Rush's, Archon events, and Service days! See what's coming up and add us to your calendar.</p>
+
+            <div class="calendar-wrap">
+                <!-- Replace the src below with your Google Calendar embed URL: Google Calendar → Settings → your calendar → Integrate calendar → Copy iframe src -->
+                <iframe src="https://calendar.google.com/calendar/embed?height=400&wkst=1&bgcolor=%23141414&ctz=America%2FNew_York&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&mode=AGENDA" title="Archon Fraternity calendar"></iframe>
+            </div>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: -1rem 0 0;">Don’t see the calendar? <a href="https://calendar.google.com/calendar" target="_blank" rel="noopener" style="color: var(--gold);">Open in Google Calendar</a> and add our events. To embed your chapter calendar here, go to Google Calendar → your calendar → Integrate calendar → copy the iframe code into this page.</p>
+
+            <h3 class="past-events-title">Past Archon Events</h3>
+            <div class="past-events-slideshow news-slideshow" aria-label="Group Rush Cookout">
+                <div class="slideshow-inner">
+                    <div class="slide active">
+                        <img src="img/past-event-cookout1.png" alt="Archon brotherhood cookout – grilling and hanging out">
+                        <div class="slide-caption">Group Rush Cookout</div>
+                    </div>
+                    <div class="slide">
+                        <img src="img/past-event-cookout2.png" alt="Archon brotherhood cookout – tailgate and food">
+                        <div class="slide-caption">Group Rush Cookout</div>
+                    </div>
+                </div>
+                <button type="button" class="slideshow-btn prev" aria-label="Previous slide">‹</button>
+                <button type="button" class="slideshow-btn next" aria-label="Next slide">›</button>
+                <div class="slideshow-dots" role="tablist"></div>
+            </div>
+        </section>
+
+        <section id="impact" class="section" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section-title">Our Impact</h2>
+            <p class="impact-intro">Community service is the core of Archon. Here's what we've raised and how many hours we've given back—together with the community and campus.</p>
+
+            <h3 class="impact-subtitle">Totals</h3>
+            <div class="totals-grid">
+                <div class="total-card" data-aos="zoom-in" data-aos-delay="150">
+                    <p class="number">$0</p>
+                    <p class="label">Dollars raised</p>
+                    <p class="period">This academic year</p>
+                </div>
+                <div class="total-card" data-aos="zoom-in" data-aos-delay="200">
+                    <p class="number">0</p>
+                    <p class="label">Hours served</p>
+                    <p class="period">Community &amp; campus</p>
+                </div>
+            </div>
+
+            <h3 class="impact-subtitle">Partner organizations</h3>
+            <p class="partners-intro">We work with these organizations for fundraisers, service days, and community events.</p>
+            <div class="partners-grid">
+                <div class="partner-card" data-aos="fade-right" data-aos-delay="100">
+                    <h3>Rio Grande University</h3>
+                    <p>Campus partnerships, maintenance fundraisers, and university-wide service initiatives.</p>
+                </div>
+                <div class="partner-card" data-aos="fade-left" data-aos-delay="150">
+                    <h3>Rio Grande food bank</h3>
+                    <p>Food drives and volunteer shifts.</p>
+                </div>
+                <div class="partner-card" data-aos="fade-right" data-aos-delay="200">
+                    <h3>Community cleanup</h3>
+                    <p>Service days and neighborhood cleanups.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="rush" class="section rush-hub" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section-title">Recruitment / Rush</h2>
+            <p style="color: var(--text-muted); max-width: 640px; margin: 0 0 2.5rem;">Thinking about going Greek? See why Archon stands out and how to get involved.</p>
+
+            <div class="sub-section">
+                <h3 class="block-title">Why Archon?</h3>
+                <div class="why-archon-grid">
+                    <div class="why-card" data-aos="fade-right" data-aos-delay="100">
+                        <h4>Values</h4>
+                        <p>Leadership, honor, and unity. We hold ourselves to high standards in the classroom, on campus, and in the community.</p>
+                    </div>
+                    <div class="why-card" data-aos="fade-left" data-aos-delay="150">
+                        <h4>Brotherhood Perks</h4>
+                        <p>Bible study, mentorship, social events, and a support system that lasts long after graduation.</p>
+                    </div>
+                    <div class="why-card" data-aos="fade-left" data-aos-delay="200">
+                        <h4>High Engagement</h4>
+                        <p>Archon events, brotherhood outings, and alot of fun.</p>
+                    </div>
+                    <div class="why-card" data-aos="fade-right" data-aos-delay="250">
+                        <h4>Strong Alumni Network</h4>
+                        <p>Brothers for life. Our alumni stay connected and help with internships, jobs, and advice.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-section">
+                <h3 class="block-title">Rush schedule</h3>
+                <ul class="rush-schedule-list">
+                    <li><strong>TBD</strong> TBD</li>
+                    <li><strong>TBD</strong> TBD</li>
+                    <li><strong>TBD</strong> TBD</li>
+                    <li><strong>TBD</strong> TBD</li>
+                </ul>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0 0 0.5rem;">Want a reminder or have questions? Sign up below.</p>
+                <form class="rush-form" action="#" method="post">
+                    <input type="text" name="name" placeholder="Your name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="tel" name="phone" placeholder="Phone (optional)">
+                    <select name="interest" aria-label="I'm most interested in">
+                        <option value="">I'm most interested in…</option>
+                        <option value="info">Learning more about Archon</option>
+                        <option value="events">Attending rush events</option>
+                        <option value="both">Both – keep me in the loop</option>
+                    </select>
+                    <button type="submit">Submit interest</button>
+                </form>
+            </div>
+
+            <div class="sub-section">
+                <h3 class="block-title">Meet the Bros</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0 0 1rem;">A few of the brothers you might see at rush. We're serious about school and brotherhood—and we don't take ourselves too seriously.</p>
+                <div class="bros-grid">
+                    <div class="bro-card" data-aos="fade-up" data-aos-delay="100">
+                        <img src="img/member1.JPG" alt="">
+                        <div class="bro-info">
+                            <p class="bro-name">Ethan P.</p>
+                        </div>
+                        <div class="bro-card-reveal">
+                            <p class="bro-major">President · Business</p>
+                            <p class="bro-fact">Runs on coffee and intramurals.</p>
+                        </div>
+                    </div>
+                    <div class="bro-card" data-aos="fade-up" data-aos-delay="150">
+                        <img src="img/member2.JPG" alt="">
+                        <div class="bro-info">
+                            <p class="bro-name">Mike P.</p>
+                        </div>
+                        <div class="bro-card-reveal">
+                            <p class="bro-major">Vice President · Education</p>
+                            <p class="bro-fact">Will challenge you to Mario Kart.</p>
+                        </div>
+                    </div>
+                    <div class="bro-card" data-aos="fade-up" data-aos-delay="200">
+                        <img src="img/member3.JPG" alt="">
+                        <div class="bro-info">
+                            <p class="bro-name">Hunter C.</p>
+                        </div>
+                        <div class="bro-card-reveal">
+                            <p class="bro-major">Treasurer · Accounting</p>
+                            <p class="bro-fact">Knows every taco spot in town.</p>
+                        </div>
+                    </div>
+                    <div class="bro-card" data-aos="fade-up" data-aos-delay="250">
+                        <img src="img/member6.JPG" alt="">
+                        <div class="bro-info">
+                            <p class="bro-name">Houdari D.</p>
+                        </div>
+                        <div class="bro-card-reveal">
+                            <p class="bro-major">Rush Chairman</p>
+                            <p class="bro-fact">Here to answer your rush questions.</p>
+                        </div>
+                    </div>
+                    <div class="bro-card" data-aos="fade-up" data-aos-delay="300">
+                        <img src="img/member10.JPG" alt="">
+                        <div class="bro-info">
+                            <p class="bro-name">Ryan W.</p>
+                        </div>
+                        <div class="bro-card-reveal">
+                            <p class="bro-major">Secretary · Communications</p>
+                            <p class="bro-fact">Podcast nerd and grill master.</p>
+                        </div>
+                    </div>
+                    <div class="bro-card" data-aos="fade-up" data-aos-delay="350">
+                        <img src="img/member12.JPG" alt="">
+                        <div class="bro-info">
+                            <p class="bro-name">Zolen W.</p>
+                        </div>
+                        <div class="bro-card-reveal">
+                            <p class="bro-major">Pledge Master</p>
+                            <p class="bro-fact">Loves hiking and good playlists.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-section">
+                <h3 class="block-title">Little Sis Program</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0 0 1rem;">Our Little Sis program connects sisters with the brotherhood through social events, mixers, and friendship. Meet some of our Little Sis members.</p>
+                <div class="lilsis-grid">
+                    <div class="lilsis-card" data-aos="fade-up" data-aos-delay="100">
+                        <img src="img/lilsis1.JPG" alt="Nalah">
+                        <div class="lilsis-info">
+                            <p class="lilsis-name">Nalah</p>
+                        </div>
+                    </div>
+                    <div class="lilsis-card" data-aos="fade-up" data-aos-delay="150">
+                        <img src="img/lilsis2.JPG" alt="Payton">
+                        <div class="lilsis-info">
+                            <p class="lilsis-name">Payton</p>
+                        </div>
+                    </div>
+                    <div class="lilsis-card" data-aos="fade-up" data-aos-delay="200">
+                        <img src="img/lilsis3.JPG" alt="Jules">
+                        <div class="lilsis-info">
+                            <p class="lilsis-name">Jules</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-section">
+                <h3 class="block-title">FAQ</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0 0 1rem;">Transparent answers for you and your family.</p>
+                <ul class="faq-list">
+                    <li class="faq-item">
+                        <details>
+                            <summary>What are dues?</summary>
+                            <div class="faq-answer">
+                                <p>Semester dues cover chapter operation, archon events, and materials. We'll share the exact amount at info night. Payment plans are available—we don't want finances to be a barrier to the right fit.</p>
+                            </div>
+                        </details>
+                    </li>
+                    <li class="faq-item">
+                        <details>
+                            <summary>What's the time commitment?</summary>
+                            <div class="faq-answer">
+                                <p>We expect brothers to prioritize academics, then Archon. Typical commitments: weekly chapter meeting, one or two events per month, and participation in at least one community project per semester. We work around class and work schedules.</p>
+                            </div>
+                        </details>
+                    </li>
+                    <li class="faq-item">
+                        <details>
+                            <summary>What's the new member process like?</summary>
+                            <div class="faq-answer">
+                                <p>New members go through an education period where you learn our history, values, and expectations. It includes brotherhood events that will turn you into an official Archon brother. It's designed to help you grow and connect—not to embarrass or harm anyone. Length and requirements follow Rio Grande university guidelines.</p>
+                            </div>
+                        </details>
+                    </li>
+                    <li class="faq-item">
+                        <details>
+                            <summary>What's your stance on hazing?</summary>
+                            <div class="faq-answer">
+                                <p><strong>Archon has a zero-tolerance anti-hazing policy.</strong> We do not haze. Period. Our member process is built on respect, mentorship, and brotherhood—not humiliation or danger. We're proud to work with our university to keep our fraternity safe and welcoming. If you ever have concerns, we encourage you to reach out to our leadership or the Rio Grande university.</p>
+                            </div>
+                        </details>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="donate" class="section" data-aos="fade-up" data-aos-delay="100">
+            <div class="donate-panel">
+                <h2 class="section-title">Donate</h2>
+                <p style="color: var(--text-muted); margin: 0 0 1.25rem; font-size: 0.95rem;">Support Archon Fraternity. Choose an amount and your preferred method.</p>
+
+                <div class="donate-options">
+                    <div class="donate-option cashapp">
+                        <div class="donate-option-logo cashapp" aria-hidden="true">
+                            <svg viewBox="0 0 48 48" fill="none"><text x="24" y="34" text-anchor="middle" font-size="32" font-weight="bold" fill="#fff" font-family="system-ui, sans-serif">$</text></svg>
+                        </div>
+                        <div class="donate-option-body">
+                            <span class="tag">$ArchonAXN</span>
+                            <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted);">Enter the amount in the Cash App when you send.</p>
+                            <a href="https://cash.app/$ArchonAXN" target="_blank" rel="noopener noreferrer" class="btn-donate">Donate with Cash App</a>
+                        </div>
+                    </div>
+
+                    <div class="donate-option paypal">
+                        <div class="donate-option-logo paypal" aria-hidden="true">
+                            <img src="https://cdn.simpleicons.org/paypal/ffffff" alt="" width="32" height="32">
+                        </div>
+                        <div class="donate-option-body">
+                            <label for="donate-amount">Amount (USD)</label>
+                            <div class="donate-amount-row">
+                                <input type="number" id="donate-amount" min="1" max="9999" step="1" value="25" placeholder="25">
+                                <a href="https://www.paypal.me/ArchonFraternity/25" target="_blank" rel="noopener noreferrer" id="paypal-donate-btn" class="btn-donate">Donate with PayPal</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="alumni" class="section" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="section-title">Archon Alumni Association</h2>
+            <p class="alumni-intro">Think life as an Archon Brother ended when you graduated? Not a chance! The Archon Alumni Association keeps you connected to your brothers—events, updates, and brotherhood for life. Founded 1957.</p>
+            <a href="https://archonalumni.org" target="_blank" rel="noopener noreferrer" class="alumni-cta">
+                Visit Archon Alumni Association
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Archon Fraternity | ΑΧΝ. All rights reserved.</p>
+    </footer>
+
+    <!-- AOS init: duration 800ms, ease-in-out, once: true, offset: 120 -->
+    <!-- Custom particle network (avoids Vanta buffer overflow) – Three.js r134 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
+        (function() {
+            var CONFIG = { count: 180, floatSpeed: 0.004, floatAmount: 0.05, mouseStrength: 0.05 };
+            var scene, camera, renderer, geometry, lineMaterial, pos, vel, colors, lineSegs = [], mouse = { x: 0, y: 0, tx: 0, ty: 0 }, W, H;
+            function init() {
+                var el = document.getElementById('particle-bg');
+                if (!el || typeof THREE === 'undefined') return;
+                W = window.innerWidth; H = window.innerHeight;
+                var n = window.innerWidth < 768 ? 80 : CONFIG.count;
+                scene = new THREE.Scene(); scene.background = null;
+                camera = new THREE.OrthographicCamera(-W/2, W/2, H/2, -H/2, -1000, 1000); camera.position.z = 500;
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); renderer.setClearColor(0x000000, 0); renderer.setSize(W, H); renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); el.appendChild(renderer.domElement);
+                pos = new Float32Array(n * 3); vel = new Float32Array(n * 3); colors = new Float32Array(n * 3);
+                var c1 = [0.98, 0.85, 0.2], c2 = [0.95, 0.78, 0.15], c3 = [0.88, 0.7, 0.12];
+                for (var i = 0; i < n; i++) {
+                    pos[i*3] = (Math.random() - 0.5) * W * 1.3; pos[i*3+1] = (Math.random() - 0.5) * H * 1.3; pos[i*3+2] = 0;
+                    vel[i*3] = (Math.random() - 0.5) * 0.015; vel[i*3+1] = (Math.random() - 0.5) * 0.015; vel[i*3+2] = 0;
+                    var c = [c1, c2, c3][i % 3]; colors[i*3] = c[0]; colors[i*3+1] = c[1]; colors[i*3+2] = c[2];
+                }
+                geometry = new THREE.BufferGeometry(); geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                scene.add(new THREE.Points(geometry, new THREE.PointsMaterial({ size: 5, vertexColors: true, transparent: true, opacity: 0.1, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false })));
+                scene.add(new THREE.Points(geometry, new THREE.PointsMaterial({ size: 2.5, vertexColors: true, transparent: true, opacity: 0.5, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false })));
+                lineMaterial = new THREE.LineBasicMaterial({ color: 0xffcc44, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+                function onMouse(e) { var x = (e.clientX || (e.touches && e.touches[0].clientX) || 0) - W/2; var y = -((e.clientY || (e.touches && e.touches[0].clientY) || 0) - H/2); mouse.tx = x; mouse.ty = y; }
+                window.addEventListener('mousemove', onMouse); window.addEventListener('touchmove', function(e) {
+                    // #region agent log
+                    try { if (!window._touchLogged) { window._touchLogged=1; fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:touchmove',message:'Touch captured on particle bg',data:{preventDefault:true},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(function(){}); } } catch(ex) {}
+                    // #endregion
+                    e.preventDefault(); onMouse(e);
+                }, { passive: false });
+                window.addEventListener('resize', function() { W = window.innerWidth; H = window.innerHeight; camera.left = -W/2; camera.right = W/2; camera.top = H/2; camera.bottom = -H/2; camera.updateProjectionMatrix(); renderer.setSize(W, H); });
+                animate();
+            }
+            function animate() {
+                requestAnimationFrame(animate);
+                var n = pos.length / 3, t = performance.now() * 0.001; mouse.x += (mouse.tx - mouse.x) * 0.015; mouse.y += (mouse.ty - mouse.y) * 0.015;
+                for (var i = 0; i < n; i++) {
+                    var ix = i * 3, x = pos[ix], y = pos[ix+1], fx = Math.sin(t*0.06+i*0.02)*CONFIG.floatAmount*CONFIG.floatSpeed, fy = Math.cos(t*0.05+i*0.02)*CONFIG.floatAmount*CONFIG.floatSpeed;
+                    var dx = mouse.x - x, dy = mouse.y - y, d = Math.sqrt(dx*dx+dy*dy) || 0.001;
+                    if (d < 200) { var f = (1 - d/200) * CONFIG.mouseStrength; vel[ix] -= (dx/d)*f; vel[ix+1] -= (dy/d)*f; }
+                    vel[ix] += fx; vel[ix+1] += fy; vel[ix] *= 0.9992; vel[ix+1] *= 0.9992;
+                    pos[ix] += vel[ix]; pos[ix+1] += vel[ix+1];
+                    if (pos[ix] < -W/2 - 80) pos[ix] = W/2 + 80; if (pos[ix] > W/2 + 80) pos[ix] = -W/2 - 80;
+                    if (pos[ix+1] < -H/2 - 80) pos[ix+1] = H/2 + 80; if (pos[ix+1] > H/2 + 80) pos[ix+1] = -H/2 - 80;
+                }
+                geometry.attributes.position.needsUpdate = true;
+                while (lineSegs.length) { scene.remove(lineSegs[0]); lineSegs[0].geometry.dispose(); lineSegs[0].material.dispose(); lineSegs.shift(); }
+                var r2 = CONFIG.connectRadius * CONFIG.connectRadius, drawn = 0;
+                for (var i = 0; i < n && drawn < CONFIG.maxLines; i++) for (var j = i + 1; j < n && drawn < CONFIG.maxLines; j++) {
+                    var dx = pos[j*3] - pos[i*3], dy = pos[j*3+1] - pos[i*3+1], d2 = dx*dx + dy*dy;
+                    if (d2 < r2) { var g = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(pos[i*3], pos[i*3+1], 0), new THREE.Vector3(pos[j*3], pos[j*3+1], 0)]); var ln = new THREE.Line(g, lineMaterial.clone()); ln.material.opacity = CONFIG.lineOpacity * (1 - Math.sqrt(d2) / CONFIG.connectRadius); scene.add(ln); lineSegs.push(ln); drawn++; }
+                }
+                renderer.render(scene, camera);
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+        })();
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // #region agent log
+            try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:DOMContentLoaded',message:'Page loaded',data:{viewportW:window.innerWidth,viewportH:window.innerHeight,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(function(){}); } catch(e) {}
+            // #endregion
+            if (typeof AOS !== 'undefined') AOS.init({ duration: 800, easing: 'ease-in-out', once: true, offset: 120 });
+        });
+    </script>
+    <script>
+        (function() {
+            var slideshows = document.querySelectorAll('.news-slideshow');
+            // #region agent log
+            try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:slideshow-init',message:'Slideshows init',data:{count:slideshows.length},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(function(){}); } catch(e) {}
+            // #endregion
+            slideshows.forEach(function(slideshow) {
+            var slides = slideshow.querySelectorAll('.slide');
+            var prevBtn = slideshow.querySelector('.slideshow-btn.prev');
+            var nextBtn = slideshow.querySelector('.slideshow-btn.next');
+            var dotsContainer = slideshow.querySelector('.slideshow-dots');
+            var n = slides.length;
+            var idx = 0;
+            var autoplayId;
+
+            function goTo(i) {
+                // #region agent log
+                try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:goTo',message:'Slide change',data:{from:idx,to:((i+n)%n)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(function(){}); } catch(e) {}
+                // #endregion
+                slides[idx].classList.remove('active');
+                idx = (i + n) % n;
+                slides[idx].classList.add('active');
+                if (dotsContainer) {
+                    var btns = dotsContainer.querySelectorAll('button');
+                    btns.forEach(function(b, j) { b.classList.toggle('active', j === idx); });
+                }
+            }
+
+            if (dotsContainer) {
+                for (var i = 0; i < n; i++) {
+                    var btn = document.createElement('button');
+                    btn.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                    btn.classList.toggle('active', i === 0);
+                    (function(j) { btn.addEventListener('click', function() { goTo(j); resetAutoplay(); }); })(i);
+                    dotsContainer.appendChild(btn);
+                }
+            }
+
+            if (prevBtn) prevBtn.addEventListener('click', function() { goTo(idx - 1); resetAutoplay(); });
+            if (nextBtn) nextBtn.addEventListener('click', function() { goTo(idx + 1); resetAutoplay(); });
+
+            function resetAutoplay() {
+                clearInterval(autoplayId);
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) autoplayId = setInterval(function() { goTo(idx + 1); }, 5000);
+            }
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) autoplayId = setInterval(function() { goTo(idx + 1); }, 5000);
+            });
+        })();
+    </script>
+    <script>
+        (function() {
+            var toggle = document.querySelector('.menu-toggle');
+            var mobileNav = document.getElementById('mobile-nav');
+            var navLinks = document.querySelectorAll('.mobile-nav .nav-link, .mobile-nav .menu-toggle.close');
+
+            function openMenu() {
+                mobileNav.classList.add('open');
+                mobileNav.setAttribute('aria-hidden', 'false');
+                toggle.setAttribute('aria-label', 'Close menu');
+                toggle.setAttribute('aria-expanded', 'true');
+                toggle.querySelector('.menu-text').textContent = 'Close Menu';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMenu() {
+                mobileNav.classList.remove('open');
+                mobileNav.setAttribute('aria-hidden', 'true');
+                toggle.setAttribute('aria-label', 'Open menu');
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.querySelector('.menu-text').textContent = 'Open Menu';
+                document.body.style.overflow = '';
+            }
+
+            if (toggle) {
+                toggle.addEventListener('click', function() {
+                    // #region agent log
+                    try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:menu-toggle',message:'Menu toggle clicked',data:{wasOpen:mobileNav.classList.contains('open')},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(function(){}); } catch(e) {}
+                    // #endregion
+                    if (mobileNav.classList.contains('open')) closeMenu();
+                    else openMenu();
+                });
+            }
+
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    // #region agent log
+                    try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:nav-link-click',message:'Nav link clicked, closing menu',data:{href:link.getAttribute('href')},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'E'})}).catch(function(){}); } catch(e) {}
+                    // #endregion
+                    closeMenu();
+                });
+            });
+        })();
+
+        (function() {
+            var amountInput = document.getElementById('donate-amount');
+            var paypalBtn = document.getElementById('paypal-donate-btn');
+            var paypalBase = 'https://www.paypal.me/ArchonFraternity';
+            function updatePayPalLink() {
+                var amount = amountInput && parseInt(amountInput.value, 10);
+                if (!amount || amount < 1) amount = 25;
+                if (paypalBtn) paypalBtn.href = paypalBase + '/' + amount;
+            }
+            if (amountInput && paypalBtn) {
+                amountInput.addEventListener('change', updatePayPalLink);
+                amountInput.addEventListener('input', updatePayPalLink);
+            }
+        })();
+    </script>
+</body>
+</html>

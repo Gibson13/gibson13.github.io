@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archon Fraternity (ΑΧΝ)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(20, 20, 20);
+            color: rgb(255, 204, 36);
+        }
+
+        header {
+            background-color: rgb(255, 204, 36);
+            color: rgb(20, 20, 20);
+            text-align: center;
+            padding: 20px 0;
+        }
+            /* Header Container to Align Crests and Title */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; /* Adds spacing between elements */
+        }
+        
+        /* Crest Logo Styling */
+        .crest-logo {
+            width: 60px; /* Adjust the size as needed */
+            height: auto;
+        }
+        
+        /* Additional Spacing for Left and Right Crests */
+        .left-crest {
+            margin-right: 10px;
+        }
+        
+        .right-crest {
+            margin-left: 10px;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+
+        header h2 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        nav {
+            background-color: rgb(40, 40, 44);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: rgb(255, 204, 36);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: calc(100% - 290px);
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        section {
+            padding: 20px;
+            max-width: calc(100% - 290px);
+            margin: 10px auto;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: url('44C14593-F0F2-4756-B722-F0AF093DBB81.jpeg');
+            color: rgb(255, 204, 36);
+            margin: 20px auto;
+            border: 1px solid rgb(255, 204, 36);
+            border-radius: 10px;
+        }
+
+        .hero h2 {
+            font-size: 2.5em;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+        }
+        .officer-photo {
+            text-align: center;
+            padding: 20px;
+            background-color: rgb(40, 40, 44);
+            color: rgb(255, 204, 36);
+            margin: 20px auto;
+            border: 1px solid rgb(255, 204, 36);
+            border-radius: 10px;
+        }
+        .officer-photo img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .about {
+            background-color: rgb(40, 40, 44);
+            background-size: cover;
+            color: rgb(255, 204, 36);
+            margin: 20px auto;
+            border: 1px solid rgb(255, 204, 36);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .events, .contact {
+            background-color: rgb(40, 40, 44);
+            color: rgb(255, 204, 36);
+            margin: 20px auto;
+            border: 1px solid rgb(255, 204, 36);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .event-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .banner {
+            background-color: rgb(231, 13, 49);
+            color: rgb(255, 204, 36);
+            text-align: center;
+            padding: 20px;
+            border: 2px solid rgb(255, 204, 36);
+            border-radius: 10px;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .crest-placeholder {
+            text-align: center;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 400px; /* Adjust height as needed */
+        }
+        
+        .crest-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Ensures the image fits without distortion */
+        }
+        
+
+        .contact form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact input, .contact textarea {
+            padding: 10px;
+            border: 1px solid rgb(255, 204, 36);
+            border-radius: 5px;
+            background-color: rgb(40, 40, 44);
+            color: rgb(255, 204, 36);
+        }
+
+        .contact button {
+            padding: 10px;
+            background-color: rgb(255, 204, 36);
+            color: rgb(40, 40, 44);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .contact button:hover {
+            background-color: rgb(40, 40, 44);
+            color: rgb(255, 204, 36);
+            border: 1px solid rgb(255, 204, 36);
+        }
+
+        footer {
+            background-color: rgb(255, 204, 36);
+            color: rgb(40, 40, 44);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .events ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .events li {
+            margin: 10px 0;
+        }
+
+            /* Side Banners - Flexible for Different Screens */
+        .side-banner {
+            position: fixed;
+            top: 20 vh; /* Adjusts dynamically with screen height */
+            width: 10vw; /* Scales with screen width */
+            max-width: 150px; /* Prevents it from getting too big */
+            height: 65vh; /* Stays proportional to screen height */
+            padding: 2vh; /* Adjusts padding based on screen size */
+            background-color: rgb(255, 204, 36);
+            color: rgb(40, 40, 44);
+            text-align: center;
+            border: 2px solid rgb(40, 40, 44);
+            border-radius: 10px;
+            }
+            
+            /* Ensure side banners remain responsive */
+        @media (max-width: 768px) { /* Adjusts for smaller screens */
+            .side-banner {
+                width: 15vw;
+                max-width: 120px;
+                height: 50vh;
+                top: 10vh;
+                padding: 1.5vh;
+                }
+            }
+
+        .left-banner {
+            left: 10px;
+        }
+
+        .right-banner {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="img/Picture1.png" alt="Archon Crest" class="crest-logo left-crest">
+            <h1>Archon Fraternity</h1>
+            <img src="img/Picture1.png" alt="Archon Crest" class="crest-logo right-crest">
+        </div>
+        <h2>ΑΧΝ - Brotherhood for Life</h2>
+    </header>    
+
+    <nav>
+        <a href="#about">About Us</a>
+        <a href="#events">Events</a>
+        <a href="Contacts.html">Contact</a>
+    </nav>
+
+    <div class="side-banner left-banner">
+        <h4>Sponsored Ad</h4>
+        <p>Check out our partners!</p>
+    </div>
+
+    <div class="side-banner right-banner">
+        <h4>Semester Goal</h4>
+        <p>Raise $15000 for mainence for a new truck</p>
+    </div>
+
+    <main>
+        <section class="hero">
+            <h2>Welcome to Archon Fraternity</h2>
+            <p>Fostering leadership, brotherhood, and academic excellence since our founding.</p>
+        </section>
+
+        <section class="officer-photo">
+            <h2>Our Leadership</h2>
+            <img src="img/officer-group-photo.JPG" alt="Group photo of all officer position-holding members">
+        </section>
+
+        <section id="about" class="about">
+            <h2>About Us</h2>
+            <p>Archon Fraternity (ΑΧΝ) was founded with the mission of creating a supportive and empowering environment for young leaders. We focus on academic success, community service, and lifelong brotherhood. Our values are leadership, honor, and unity.</p>
+        </section>
+
+        <section id="events" class="events">
+            <h2>Upcoming Events</h2>
+            <ul>
+                <li><strong>March 15:</strong> Annual Charity Gala</li>
+                <li><strong>April 10:</strong> Leadership Workshop</li>
+                <li><strong>May 20:</strong> Founders' Day Celebration</li>
+            </ul>
+
+            <div class="event-container">
+                <div class="banner">
+                    <h3>Talent Show Fundraiser!</h3>
+                    <p>Support the Rio Grande University's Maintenance Department</p>
+                    <p><strong>Auditions:</strong> March 21st, 6-8 PM</p>
+                    <p><strong>Rehearsal:</strong> April 3rd, 6-8 PM</p>
+                    <p><strong>Show:</strong> April 10th, 7-8 PM</p>
+                </div>
+                <div class="crest-placeholder">
+                    <img src="img/Picture1.png" alt="Archon Crest place Holder">
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Talent Show Registration</h2>
+            <form action="register.php" method="post" enctype="text/plain">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="tel" name="phone" placeholder="Your Phone Number" required>
+                <input type="text" name="act" placeholder="Your Act (e.g., Singing, Comedy)" required>
+                <button type="submit">Register for Talent Show</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Archon Fraternity | ΑΧΝ. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
