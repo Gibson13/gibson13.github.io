@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -364,3 +365,371 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impact — Archon Fraternity (ΑΧΝ)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-soft: #141414;
+            --text: #f5f5f5;
+            --text-muted: #a3a3a3;
+            --accent: #e70d31;
+            --gold: #ffcc24;
+            --font: 'DM Sans', -apple-system, sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 1rem;
+            padding: 0.75rem 1rem;
+            background: var(--gold);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 9999;
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 1rem; }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 1.25rem 2rem;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo-link img { width: 48px; height: auto; }
+
+        .logo-text { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.02em; }
+
+        .logo-tagline {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        nav.desktop-nav { display: flex; gap: 2rem; }
+
+        nav.desktop-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav.desktop-nav a:hover { color: var(--gold); }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 200;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .mobile-nav a { color: var(--text); text-decoration: none; font-size: 1.25rem; font-weight: 500; }
+        .mobile-nav.open { display: flex; }
+
+        @media (max-width: 768px) {
+            nav.desktop-nav { display: none; }
+            .menu-toggle { display: block; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            margin: 0 0 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-intro {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin: 0 0 3rem;
+            max-width: 560px;
+        }
+
+        /* Totals */
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .total-card {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .total-card .number {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--gold);
+            margin: 0 0 0.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .total-card .label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .total-card .period {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        /* Partner orgs */
+        .partners-intro {
+            color: var(--text-muted);
+            margin: 0 0 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .partner-card {
+            background: var(--bg-soft);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .partner-card h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        .partner-card p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .partner-card a {
+            color: var(--gold);
+            font-size: 0.85rem;
+            text-decoration: none;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .partner-card a:hover { text-decoration: underline; }
+
+        /* Hover & scroll animations - philanthropy page */
+        .total-card {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .total-card:hover {
+            transform: scale(1.03) translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 20px rgba(255, 204, 36, 0.12);
+        }
+        .partner-card {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .partner-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        footer p { margin: 0; font-size: 0.875rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <a href="#content" class="skip-link">Skip to Content</a>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="Main.html" class="logo-link">
+                <img src="img/Picture1.png" alt="">
+                <div>
+                    <div class="logo-text">Archon Fraternity</div>
+                    <div class="logo-tagline">ΑΧΝ — Brotherhood for Life</div>
+                </div>
+            </a>
+
+            <nav class="desktop-nav" aria-label="Main">
+                <a href="Main.html#about">About</a>
+                <a href="Main.html#events">Events</a>
+                <a href="Main.html#rush">Rush</a>
+                <a href="Main.html#donate">Donate</a>
+                <a href="Impact.html">Impact</a>
+                <a href="Contacts.html">Contact</a>
+            </nav>
+
+            <button type="button" class="menu-toggle" aria-label="Open menu">
+                <span class="menu-text">Open Menu</span>
+            </button>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+        <a href="Main.html#about" class="nav-link">About</a>
+        <a href="Main.html#events" class="nav-link">Events</a>
+        <a href="Main.html#rush" class="nav-link">Rush</a>
+        <a href="Main.html#donate" class="nav-link">Donate</a>
+        <a href="Impact.html" class="nav-link">Impact</a>
+        <a href="Contacts.html" class="nav-link">Contact</a>
+        <button type="button" class="menu-toggle close">Close Menu</button>
+    </nav>
+
+    <main id="content" class="container" tabindex="-1">
+        <h1 class="section-title" data-aos="fade-up" data-aos-delay="100">Our Impact</h1>
+        <p class="page-intro" data-aos="fade-up" data-aos-delay="150">Philanthropy and service are core to Archon. Here’s what we’ve raised and how many hours we’ve given back—together with the organizations we partner with.</p>
+
+        <h2 class="section-title" style="font-size: 1.35rem; margin-bottom: 1rem;" data-aos="fade-up" data-aos-delay="100">Totals</h2>
+        <div class="totals-grid">
+            <div class="total-card" data-aos="zoom-in" data-aos-delay="150">
+                <p class="number" id="total-raised">$12,500</p>
+                <p class="label">Dollars raised</p>
+                <p class="period">This academic year</p>
+            </div>
+            <div class="total-card" data-aos="zoom-in" data-aos-delay="200">
+                <p class="number" id="total-hours">480</p>
+                <p class="label">Hours served</p>
+                <p class="period">Community & campus</p>
+            </div>
+        </div>
+
+        <h2 class="section-title" style="font-size: 1.35rem; margin-bottom: 0.5rem;" data-aos="fade-up" data-aos-delay="100">Partner organizations</h2>
+        <p class="partners-intro" data-aos="fade-up" data-aos-delay="150">We work with these organizations for fundraisers, service days, and community events.</p>
+        <div class="partners-grid">
+            <div class="partner-card" data-aos="fade-right" data-aos-delay="100">
+                <h3>Rio Grande University</h3>
+                <p>Campus partnerships, maintenance fundraisers, and university-wide service initiatives.</p>
+            </div>
+            <div class="partner-card" data-aos="fade-left" data-aos-delay="150">
+                <h3>Local food bank</h3>
+                <p>Food drives and volunteer shifts. Update with your actual partner name and link.</p>
+            </div>
+            <div class="partner-card" data-aos="fade-right" data-aos-delay="200">
+                <h3>Community cleanup / parks</h3>
+                <p>Service days and park or neighborhood cleanups. Add your partner details here.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Archon Fraternity | ΑΧΝ. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({ duration: 800, easing: 'ease-in-out', once: true, offset: 120 });
+        });
+    </script>
+    <script>
+        (function() {
+            var toggle = document.querySelector('.menu-toggle');
+            var mobileNav = document.getElementById('mobile-nav');
+            var navLinks = document.querySelectorAll('.mobile-nav .nav-link, .mobile-nav .menu-toggle.close');
+
+            function openMenu() {
+                mobileNav.classList.add('open');
+                mobileNav.setAttribute('aria-hidden', 'false');
+                toggle.setAttribute('aria-label', 'Close menu');
+                toggle.querySelector('.menu-text').textContent = 'Close Menu';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMenu() {
+                mobileNav.classList.remove('open');
+                mobileNav.setAttribute('aria-hidden', 'true');
+                toggle.setAttribute('aria-label', 'Open menu');
+                toggle.querySelector('.menu-text').textContent = 'Open Menu';
+                document.body.style.overflow = '';
+            }
+
+            if (toggle) {
+                toggle.addEventListener('click', function() {
+                    if (mobileNav.classList.contains('open')) closeMenu();
+                    else openMenu();
+                });
+            }
+            navLinks.forEach(function(link) { link.addEventListener('click', closeMenu); });
+        })();
+    </script>
+</body>
+</html>
+>>>>>>> 746ca995f3eda8c3fd89fb23f33fa0cf112a2b06
