@@ -172,6 +172,22 @@
         @media (max-width: 768px) {
             nav.desktop-nav { display: none; }
             .menu-toggle { display: block; }
+            .site-header { padding: 0.75rem 1rem; }
+            .header-inner { gap: 0.5rem; }
+            .logo-link img { width: 40px; }
+            .logo-text { font-size: 1rem; }
+            .logo-tagline { display: none; }
+            .section { padding: 2.5rem 1rem; }
+            .hero { min-height: 55vh; padding: 3rem 1rem; }
+            .fb-post-card { padding: 1rem; }
+            .fb-post-badge { display: none; }
+            .fb-post-header { flex-wrap: wrap; }
+            .donate-panel { padding: 1.25rem; }
+            .donate-option { flex-direction: column; align-items: flex-start; }
+            .donate-amount-row { width: 100%; }
+            .donate-amount-row input[type="number"] { flex: 1; min-width: 0; }
+            .calendar-wrap iframe { min-height: 360px; height: 360px; }
+            .menu-toggle .menu-text { font-size: 0.85rem; }
         }
 
         main { outline: none; position: relative; z-index: 1; }
@@ -1587,7 +1603,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script>
         (function() {
-            var CONFIG = { count: 180, floatSpeed: 0.004, floatAmount: 0.05, mouseStrength: 0.05 };
+            var CONFIG = { count: 180, floatSpeed: 0.004, floatAmount: 0.05, mouseStrength: 0.05, connectRadius: 120, maxLines: 80, lineOpacity: 0.35 };
             var scene, camera, renderer, geometry, lineMaterial, pos, vel, colors, lineSegs = [], mouse = { x: 0, y: 0, tx: 0, ty: 0 }, W, H;
             function init() {
                 var el = document.getElementById('particle-bg');
@@ -1609,12 +1625,7 @@
                 scene.add(new THREE.Points(geometry, new THREE.PointsMaterial({ size: 2.5, vertexColors: true, transparent: true, opacity: 0.5, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false })));
                 lineMaterial = new THREE.LineBasicMaterial({ color: 0xffcc44, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
                 function onMouse(e) { var x = (e.clientX || (e.touches && e.touches[0].clientX) || 0) - W/2; var y = -((e.clientY || (e.touches && e.touches[0].clientY) || 0) - H/2); mouse.tx = x; mouse.ty = y; }
-                window.addEventListener('mousemove', onMouse); window.addEventListener('touchmove', function(e) {
-                    // #region agent log
-                    try { if (!window._touchLogged) { window._touchLogged=1; fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:touchmove',message:'Touch captured on particle bg',data:{preventDefault:true},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(function(){}); } } catch(ex) {}
-                    // #endregion
-                    e.preventDefault(); onMouse(e);
-                }, { passive: false });
+                window.addEventListener('mousemove', onMouse);
                 window.addEventListener('resize', function() { W = window.innerWidth; H = window.innerHeight; camera.left = -W/2; camera.right = W/2; camera.top = H/2; camera.bottom = -H/2; camera.updateProjectionMatrix(); renderer.setSize(W, H); });
                 animate();
             }
@@ -1645,18 +1656,12 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // #region agent log
-            try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:DOMContentLoaded',message:'Page loaded',data:{viewportW:window.innerWidth,viewportH:window.innerHeight,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(function(){}); } catch(e) {}
-            // #endregion
             if (typeof AOS !== 'undefined') AOS.init({ duration: 800, easing: 'ease-in-out', once: true, offset: 120 });
         });
     </script>
     <script>
         (function() {
             var slideshows = document.querySelectorAll('.news-slideshow');
-            // #region agent log
-            try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:slideshow-init',message:'Slideshows init',data:{count:slideshows.length},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(function(){}); } catch(e) {}
-            // #endregion
             slideshows.forEach(function(slideshow) {
             var slides = slideshow.querySelectorAll('.slide');
             var prevBtn = slideshow.querySelector('.slideshow-btn.prev');
@@ -1667,9 +1672,6 @@
             var autoplayId;
 
             function goTo(i) {
-                // #region agent log
-                try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:goTo',message:'Slide change',data:{from:idx,to:((i+n)%n)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(function(){}); } catch(e) {}
-                // #endregion
                 slides[idx].classList.remove('active');
                 idx = (i + n) % n;
                 slides[idx].classList.add('active');
@@ -1726,9 +1728,6 @@
 
             if (toggle) {
                 toggle.addEventListener('click', function() {
-                    // #region agent log
-                    try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:menu-toggle',message:'Menu toggle clicked',data:{wasOpen:mobileNav.classList.contains('open')},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(function(){}); } catch(e) {}
-                    // #endregion
                     if (mobileNav.classList.contains('open')) closeMenu();
                     else openMenu();
                 });
@@ -1736,9 +1735,6 @@
 
             navLinks.forEach(function(link) {
                 link.addEventListener('click', function() {
-                    // #region agent log
-                    try { fetch('http://127.0.0.1:7242/ingest/53fbb9e9-68bc-40ae-b3be-025a8e451bef',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Main.html:nav-link-click',message:'Nav link clicked, closing menu',data:{href:link.getAttribute('href')},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'E'})}).catch(function(){}); } catch(e) {}
-                    // #endregion
                     closeMenu();
                 });
             });
